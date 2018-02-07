@@ -1,15 +1,28 @@
-const actionButton = document.querySelector('.actions .btn');
-const width = actionButton.offsetWidth;
-actionButton.style.width = `${width}px`;
 
-actionButton.addEventListener('click', (event) => {
-    const el = event.currentTarget;
+class ButtonStated {
+    constructor(selector) {
+        this.element = document.querySelector(selector);
+        this.fullWidth = this.element.offsetWidth;
 
-    el.classList.toggle('icon');
-
-    if (!el.classList.contains('icon')) {
-        el.style.width = `${width}px`;
-    } else {
-        el.removeAttribute('style');
+        this.element.style.width = `${this.fullWidth}px`;
     }
+
+    onClick(callback) {
+        this.element.addEventListener('click', event => {
+            const el = event.currentTarget;
+            el.classList.toggle('icon');
+
+            if (el.classList.contains('icon')) {
+                el.removeAttribute('style');
+            } else {
+                el.style.width = `${this.fullWidth}px`;
+            }
+
+            callback(event);
+        });
+    }
+}
+
+new ButtonStated('.actions .btn').onClick((event) => {
+    document.querySelector('.wrapper').classList.toggle('payment');
 });

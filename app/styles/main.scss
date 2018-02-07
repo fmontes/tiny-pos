@@ -1,6 +1,10 @@
 // bower:scss
 // endbower
 
+#opacity-anim {
+    transition: opacity 200ms;
+}
+
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
 
 :root {
@@ -56,19 +60,23 @@ body {
     }
 }
 
+.actions {
+    justify-self: end;
+}
+
 .btn__icon {
     display: none;
 }
 
-.wrapper {
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: 222px 1fr;
-    height: 100vh;
-}
-
 .barcode {
     background-color: var(--white);
+}
+
+.page__title {
+    @extend #opacity-anim;
+    color: var(--blue);
+    text-align: center;
+    opacity: 0;
 }
 
 .content {
@@ -101,11 +109,23 @@ body {
     color: rgba(#fff, .5)
 }
 
+.subtotal,
+.tax,
 .total {
-    border-bottom: solid 2px var(--white);
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+}
+
+.subtotal,
+.tax {
+    @extend #opacity-anim;
+    margin-bottom: 8px;
+    opacity: 0;
+}
+
+.total {
+    border-bottom: solid 2px var(--white);
     padding-bottom: 4px;
 }
 
@@ -118,6 +138,23 @@ body {
     color: var(--yellow);
 }
 
-.actions {
-    justify-self: end;
+.wrapper {
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 222px 1fr;
+    height: 100vh;
+
+    &.payment {
+        grid-template-rows: 60px 1fr;
+
+        .page__title,
+        .subtotal,
+        .tax {
+            opacity: 1;
+        }
+
+        .content {
+            grid-template-rows: auto 1fr 50px;
+        }
+    }
 }
