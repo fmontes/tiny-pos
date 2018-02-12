@@ -1,28 +1,32 @@
+const wrapper = document.querySelector('.wrapper');
 
-class ButtonStated {
-    constructor(selector) {
-        this.element = document.querySelector(selector);
-        this.fullWidth = this.element.offsetWidth;
+const actionsPaymentButton = document.querySelector('.actions__payment');
+const actionsPaymentButtonWidth = actionsPaymentButton.offsetWidth;
+actionsPaymentButton.style.width = `${actionsPaymentButtonWidth}px`;
 
-        this.element.style.width = `${this.fullWidth}px`;
-    }
+actionsPaymentButton.addEventListener('click', event => {
+    setState('payment');
+});
 
-    onClick(callback) {
-        this.element.addEventListener('click', event => {
-            const el = event.currentTarget;
-            el.classList.toggle('icon');
+const paymentMethodSelector = document.querySelector('.actions__payment-method');
 
-            if (el.classList.contains('icon')) {
-                el.removeAttribute('style');
-            } else {
-                el.style.width = `${this.fullWidth}px`;
-            }
+paymentMethodSelector.addEventListener('click', (event) => {
+    document.querySelector('.payment-method--selected').classList.remove('payment-method--selected');
+    event.target.classList.toggle('payment-method--selected')
+});
 
-            callback(event);
-        });
+const backButton = document.querySelector('.actions__back');
+backButton.addEventListener('click', ($event) => {
+    setState('home');
+});
+
+
+const setState = (state) => {
+    if (state === 'payment') {
+        wrapper.classList.add('payment');
+        actionsPaymentButton.removeAttribute('style');
+    } else if (state === 'home') {
+        wrapper.classList.remove('payment');
+        actionsPaymentButton.style.width = `${actionsPaymentButtonWidth}px`;   
     }
 }
-
-new ButtonStated('.actions .btn').onClick((event) => {
-    document.querySelector('.wrapper').classList.toggle('payment');
-});

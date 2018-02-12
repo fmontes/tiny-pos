@@ -1,10 +1,6 @@
 // bower:scss
 // endbower
 
-#opacity-anim {
-    transition: opacity 200ms;
-}
-
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
 
 :root {
@@ -23,6 +19,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    height: 100%; // vh fails in iOS device
 }
 
 body {
@@ -31,6 +28,30 @@ body {
     color: var(--white);
     font-family: 'PT Sans', sans-serif;
     font-size: var(--font-size-basic);
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    text-align: right;
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    right: 16px;
+}
+
+.actions__back,
+.actions__payment-method {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.actions__payment-method {
+    display: flex;
+    border: solid 2px var(--white);
+    border-radius: 25px;
+    width: 100px;
 }
 
 .btn {
@@ -44,24 +65,18 @@ body {
     margin: 0;
     outline: none;
     padding: 0 16px;
-    transition: width 100ms;
-
-    &.icon {
-        width: 50px;
-        padding: 0;
-
-        .btn__label {
-            display: none;
-        }
-
-        .btn__icon {
-            display: block;
-        }
-    }
 }
 
-.actions {
-    justify-self: end;
+.btn--icon {
+    padding: 0;
+    width: 50px;
+}
+
+.btn--outline {
+    display: inline-flex;
+    justify-content: center;
+    background: none;
+    border: solid 2px var(--yellow);
 }
 
 .btn__icon {
@@ -70,26 +85,70 @@ body {
 
 .barcode {
     background-color: var(--white);
-}
-
-.page__title {
-    @extend #opacity-anim;
-    color: var(--blue);
-    text-align: center;
-    opacity: 0;
+    height: 222px;
+    flex-shrink: 0;
 }
 
 .content {
-    padding: 16px;
-    display: grid;
-    grid-template-rows: 1fr auto 50px;
-    grid-gap: 16px;
+    padding: 16px 16px 66px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.invoincing {
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0;
+}
+
+.page__title {
+    color: var(--blue);
+    height: 60px;
+    line-height: 60px;
+    margin: 0;
+    opacity: 0;
+    text-align: center;
+    transform: translateY(20px);
+}
+
+.payment-method__cash,
+.payment-method__card {
+    display: flex;
+    background: none;
+    border: none;
+    outline: none;
+    height: 46px;
+    width: 50px;
+
+    svg {
+        pointer-events: none;
+    }
+}
+
+.payment-method__cash {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.payment-method__card {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.payment-method--selected {
+    background-color: var(--white);
+
+    svg g {
+        fill: var(--blue);
+    }
 }
 
 .products {
     list-style: none;
     margin: 0;
     padding: 0;
+    flex-grow: 1;
 }
 
 .products__item {
@@ -119,7 +178,6 @@ body {
 
 .subtotal,
 .tax {
-    @extend #opacity-anim;
     margin-bottom: 8px;
     opacity: 0;
 }
@@ -139,13 +197,23 @@ body {
 }
 
 .wrapper {
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
-    display: grid;
-    grid-template-rows: 222px 1fr;
-    height: 100vh;
+    height: 100%;
 
     &.payment {
         grid-template-rows: 60px 1fr;
+
+        .actions__back,
+        .actions__payment-method {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .barcode {
+            height: 60px;
+        }
 
         .page__title,
         .subtotal,
@@ -153,8 +221,60 @@ body {
             opacity: 1;
         }
 
+        .page__title {
+            transform: translateY(0);
+        }
+
         .content {
             grid-template-rows: auto 1fr 50px;
         }
+
+        .products {
+            flex-grow: 0;
+        }
+
+        .actions__payment {
+            width: 50px;
+            padding: 0;
+    
+            .btn__label {
+                display: none;
+            }
+    
+            .btn__icon {
+                display: block;
+            }
+        }
     }
+}
+
+// ANIMATIONS
+.actions__back,
+.actions__payment-method {
+    transition: 
+        opacity 200ms ease-in,
+        transform 200ms ease-in;
+}
+
+.actions__payment {
+    transition: width 200ms ease-in;
+}
+
+.page__title {
+    transition:
+        opacity 100ms ease-in 200ms,
+        transform 100ms ease-in 200ms;
+}
+
+.barcode {
+    transition: height 250ms ease-in;
+}
+
+.products {
+    transition: flex-grow 250ms ease-in 50ms;
+}
+
+.subtotal,
+.tax {
+    transition: opacity 250ms ease-in 50ms;
 }
