@@ -147,7 +147,7 @@ input[type="number"] {
 }
 
 .content {
-    padding: 16px 16px 66px;
+    padding: 16px 16px 82px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -166,7 +166,7 @@ input[type="number"] {
 
     .done & {
         display: block;
-        animation: zoom-fade 700ms;
+        animation: zoom-fade 1000ms;
     }
 }
 
@@ -192,7 +192,7 @@ input[type="number"] {
 .invoincing {
     display: flex;
     flex-direction: column;
-    margin: 16px 0;
+    margin: 16px 0 0;
     flex-shrink: 0;
 }
 
@@ -239,14 +239,14 @@ input[type="number"] {
 }
 
 .payment-selected {
-    display: none;
+    height: 0;
+    overflow: hidden;
 }
 
 .payment-selected__inner {
     width: calc(200%);
     display: grid;
     grid-template-columns: 100% 100%;
-    transition: transform 150ms ease-in;
 
     .payment-selected--card & {
         transform: translateX(-100%);
@@ -345,9 +345,17 @@ input[type="number"] {
             opacity: 1;
             transform: translateY(0);
         }
+
+        .payment-selected {
+            height: 70px;
+        }
         
         .products {
             flex-grow: 0;
+        }
+
+        .invoincing {
+            flex-grow: 1;
         }
 
         .subtotal,
@@ -359,6 +367,10 @@ input[type="number"] {
 }
 
 // ANIMATIONS
+
+.payment-selected__inner {
+    transition: transform 150ms ease-in;
+}
 
 .actions__payment {
     transition: width 100ms ease-in;
@@ -374,16 +386,21 @@ input[type="number"] {
     transition: opacity 150ms ease-in;
 }
 
+.invoincing,
 .products {
-    transition: flex-grow 150ms ease-in 200ms;
+    transition: flex 150ms ease-in 200ms;
 }
 
 .barcode {
     transition: height 150ms ease-in 350ms;
 }
 
+.payment-selected {
+    transition: height 100ms ease-in 350ms;
+}
+
 .page__title {
-    transition: transform 100ms ease-in 400ms, opacity 100ms ease-in 400ms
+    transition: transform 100ms ease-in 400ms, opacity 100ms ease-in 400ms;
 }
 
 .total.show {

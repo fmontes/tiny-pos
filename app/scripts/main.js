@@ -64,6 +64,7 @@ function resetApp() {
     totalElem.innerHTML = '';
     actionsPaymentButton.setAttribute('disabled', true);
     productsModel = [];
+    document.querySelector('.total').classList.remove('show');
 }
 
 function setInvoice(priceProduct) {
