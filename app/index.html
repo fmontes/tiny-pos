@@ -32,37 +32,37 @@
         </section>
         <section class="content">
             <ul class="products">
-                <li class="products__item">
-                    <span class="products__quantity">1x</span>
-                    <span class="products__name">Coca Cola pet 600ml</span>
-                    <span class="products__price">$100,00</span>
-                </li>
-                <li class="products__item">
-                    <span class="products__quantity">2x</span>
-                    <span class="products__name">Cerveza Corona 355ml</span>
-                    <span class="products__price">$6.000,00</span>
-                </li>
-                <li class="products__item">
-                    <span class="products__quantity">99x</span>
-                    <span class="products__name">Candy bar</span>
-                    <span class="products__price">$10,00</span>
-                </li>
             </ul>
 
             <div class="invoincing">
                 <div class="subtotal">
                     <span class="subtotal__label">Subtotal</span>
-                    <span class="subtotal__ammount">$5.407.90</span>
+                    <span class="subtotal__ammount">$0</span>
                 </div>
 
                 <div class="tax">
                     <span class="tax__label">Tax (13%)</span>
-                    <span class="tax__ammount">$$702.91</span>
+                    <span class="tax__ammount">$0</span>
                 </div>
 
                 <div class="total">
                     <span class="total__label">Total</span>
-                    <span class="total__ammount">$6.110,00</span>
+                    <span class="total__ammount">$0</span>
+                </div>
+            </div>
+
+            <div class="payment-selected">
+                <div class="payment-selected__inner">
+                    <div class="cash">
+                        <label for="cash" class="cash__paying-label">Paying with</label>
+                        <span class="cash__change-label">Change</span>
+                        <input type="number" id="cash" pattern="\d*" class="cash__paying-field" />
+                        <span class="cash__change-ammout">$0.00</span>
+                    </div>
+                    <div class="card">
+                        <span class="card__ label">Swipe Card</span>
+                        <span class="card__ammout">$0.00</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -75,7 +75,8 @@
                     <desc></desc>
                     <defs></defs>
                     <g id="arrow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <path d="M7.22558646,7.88514 L22.204,7.88514 C23.3724095,7.88514 24.32,8.83197982 24.32,10.00026 C24.32,11.1685464 23.3724133,12.1154 22.204,12.1154 L7.22603502,12.1154 L11.5034176,16.3889741 C12.3300041,17.2150485 12.3300041,18.5549515 11.5030682,19.3813749 C10.6767457,20.2063702 9.3375592,20.2061944 8.51140392,19.3807974 L0.620730791,11.4966082 C0.521704975,11.397664 0.433088077,11.2889684 0.357235942,11.1750123 C0.317862844,11.116301 0.289358042,11.0641404 0.266258382,11.0172043 C0.222008901,10.9394717 0.192384345,10.8829041 0.160514275,10.8065487 C0.131137385,10.735108 0.111759392,10.6724611 0.0955738004,10.6116724 C0.0716443872,10.5395279 0.0551154051,10.4831761 0.0414895332,10.4145316 C0.0144540246,10.2794583 0.000420566037,10.1420286 0.000280176857,10.0045731 C-8.2843888e-16,9.86073938 0.0143461677,9.72190541 0.0421028151,9.58377509 C0.0555995449,9.51693294 0.0716350643,9.46231609 0.0885841845,9.41218238 C0.111523942,9.32807385 0.131475813,9.26375635 0.161227784,9.19208663 C0.190524984,9.12107019 0.220161689,9.06442133 0.252366156,9.00856215 C0.286631041,8.9410959 0.31552613,8.88791151 0.356209583,8.82662912 C0.433575531,8.71067706 0.521679975,8.60262005 0.620148497,8.50421604 L8.51111597,0.619210572 C9.33736643,-0.206402839 10.6770946,-0.206402839 11.5036238,0.619470228 C12.3297546,1.44557067 12.3295903,2.7850732 11.5030767,3.61103679 L7.22558646,7.88514 Z" id="Path" fill="#E2E800"></path>
+                        <path d="M7.22558646,7.88514 L22.204,7.88514 C23.3724095,7.88514 24.32,8.83197982 24.32,10.00026 C24.32,11.1685464 23.3724133,12.1154 22.204,12.1154 L7.22603502,12.1154 L11.5034176,16.3889741 C12.3300041,17.2150485 12.3300041,18.5549515 11.5030682,19.3813749 C10.6767457,20.2063702 9.3375592,20.2061944 8.51140392,19.3807974 L0.620730791,11.4966082 C0.521704975,11.397664 0.433088077,11.2889684 0.357235942,11.1750123 C0.317862844,11.116301 0.289358042,11.0641404 0.266258382,11.0172043 C0.222008901,10.9394717 0.192384345,10.8829041 0.160514275,10.8065487 C0.131137385,10.735108 0.111759392,10.6724611 0.0955738004,10.6116724 C0.0716443872,10.5395279 0.0551154051,10.4831761 0.0414895332,10.4145316 C0.0144540246,10.2794583 0.000420566037,10.1420286 0.000280176857,10.0045731 C-8.2843888e-16,9.86073938 0.0143461677,9.72190541 0.0421028151,9.58377509 C0.0555995449,9.51693294 0.0716350643,9.46231609 0.0885841845,9.41218238 C0.111523942,9.32807385 0.131475813,9.26375635 0.161227784,9.19208663 C0.190524984,9.12107019 0.220161689,9.06442133 0.252366156,9.00856215 C0.286631041,8.9410959 0.31552613,8.88791151 0.356209583,8.82662912 C0.433575531,8.71067706 0.521679975,8.60262005 0.620148497,8.50421604 L8.51111597,0.619210572 C9.33736643,-0.206402839 10.6770946,-0.206402839 11.5036238,0.619470228 C12.3297546,1.44557067 12.3295903,2.7850732 11.5030767,3.61103679 L7.22558646,7.88514 Z"
+                            id="Path" fill="#E2E800"></path>
                     </g>
                 </svg>
             </button>
@@ -110,7 +111,7 @@
                     </svg>
                 </button>
             </div>
-            <button type="button" class="btn actions__payment">
+            <button type="button" class="btn actions__payment" disabled="true">
                 <span class="btn__label">Payment</span>
                 <span class="btn__icon">
                     <svg width="24px" height="18px" viewBox="0 0 24 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -145,6 +146,7 @@
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
+    <script src="scripts/data.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
 </body>
