@@ -151,8 +151,9 @@ backButton.addEventListener('click', $event => {
 document.querySelector('.barcode').addEventListener('click', () => {
     addProduct(getRandomProduct());
 
-    if (productsModel.length) {
+    if (productsModel.length === 1) {
         actionsPaymentButton.removeAttribute('disabled');
+        document.querySelector('.total').classList.add('show');
     }
 });
 

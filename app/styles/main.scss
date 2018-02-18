@@ -110,7 +110,6 @@ input[type="number"] {
 .barcode {
     background-color: var(--white);
     height: 222px;
-    flex-shrink: 0;
 }
 
 .card, .cash {
@@ -252,8 +251,6 @@ input[type="number"] {
     .payment-selected--card & {
         transform: translateX(-100%);
     }
-
-    // transform: translateX(-100%);
 }
 
 .products {
@@ -271,17 +268,6 @@ input[type="number"] {
     grid-template-columns: 40px 1fr auto;
     border-bottom: solid 1px rgba(#fff, .3);
     animation: slideUp .25s forwards;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(1em);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
 }
 
 .products__quantity {
@@ -305,12 +291,13 @@ input[type="number"] {
 .tax {
     margin-bottom: 8px;
     opacity: 0;
-    display: none;
+    display: flex;
 }
 
 .total {
     border-bottom: solid 2px var(--white);
     padding-bottom: 4px;
+    opacity: 0;
 }
 
 .total__label {
@@ -337,50 +324,6 @@ input[type="number"] {
             transform: translateX(0);
         }
 
-        .barcode {
-            height: 60px;
-        }
-
-        .page__title,
-        .subtotal,
-        .tax {
-            opacity: 1;
-        }
-
-        .subtotal,
-        .tax {
-            display: flex;
-            opacity: 1;
-        }
-
-        .page__title {
-            transform: translateY(0);
-        }
-
-        .payment-selected {
-            display: block;
-        }
-
-        @keyframes showOne {
-            1% {
-                display: flex;
-            }
-            2% {
-                display: flex;
-                transform: translateY(1em);
-                opacity: 0;
-            }
-            100% {
-                display: flex;
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .products {
-            flex-grow: 0;
-        }
-
         .actions__payment {
             width: 50px;
             padding: 0;
@@ -393,37 +336,67 @@ input[type="number"] {
                 display: block;
             }
         }
+
+        .barcode {
+            height: 60px;
+        }
+
+        .page__title {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .products {
+            flex-grow: 0;
+        }
+
+        .subtotal,
+        .tax {
+            opacity: 1;
+        }
     }
 
 }
 
 // ANIMATIONS
-.actions__back,
-.actions__payment-method {
-    transition: 
-        opacity 200ms ease-in,
-        transform 200ms ease-in;
-}
 
 .actions__payment {
-    transition: all 200ms ease-in;
+    transition: width 100ms ease-in;
 }
 
-.page__title {
-    transition:
-        opacity 100ms ease-in 200ms,
-        transform 100ms ease-in 200ms;
-}
-
-.barcode {
-    transition: height 250ms ease-in;
-}
-
-.products {
-    transition: flex-grow 250ms ease-in 50ms;
+.actions__payment-method,
+.actions__back {
+    transition: transform 100ms ease-in, opacity 100ms ease-in
 }
 
 .subtotal,
 .tax {
-    transition: opacity 250ms ease-in 50ms;
+    transition: opacity 150ms ease-in;
+}
+
+.products {
+    transition: flex-grow 150ms ease-in 200ms;
+}
+
+.barcode {
+    transition: height 150ms ease-in 350ms;
+}
+
+.page__title {
+    transition: transform 100ms ease-in 400ms, opacity 100ms ease-in 400ms
+}
+
+.total.show {
+    animation: slideUp 200ms forwards;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(1em);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
