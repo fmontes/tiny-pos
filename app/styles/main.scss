@@ -12,6 +12,9 @@
     --font-size-large: 1.5rem;
     --disabled-color: rgba(255, 255, 255, 0.2);
     --font-family: 'PT Sans', sans-serif;
+    --spacing-1: 0.5rem;
+    --spacing-2: 1rem;
+    --spacing-3: 1.5rem;
 }
 
 *, *:before, *:after {
@@ -54,9 +57,9 @@ input[type="number"] {
     height: 50px;
     text-align: right;
     position: absolute;
-    left: 16px;
-    bottom: 16px;
-    right: 16px;
+    left: var(--spacing-2);
+    bottom: var(--spacing-2);
+    right: var(--spacing-2);
 }
 
 .actions__back,
@@ -82,7 +85,7 @@ input[type="number"] {
     height: 50px;
     margin: 0;
     outline: none;
-    padding: 0 16px;
+    padding: 0 var(--spacing-2);
 
     &:disabled {
         background-color: transparent;
@@ -114,7 +117,7 @@ input[type="number"] {
 
 .card, .cash {
     display: grid;
-    grid-gap: 8px 16px;
+    grid-gap: var(--spacing-1) var(--spacing-2);
     justify-items: center;  
     width: 50%;  
 }
@@ -147,7 +150,7 @@ input[type="number"] {
 }
 
 .content {
-    padding: 16px 16px 82px;
+    padding: var(--spacing-2) 0 82px var(--spacing-2);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -192,7 +195,7 @@ input[type="number"] {
 .invoincing {
     display: flex;
     flex-direction: column;
-    margin: 16px 0 0;
+    margin: var(--spacing-2) 0 0;
     flex-shrink: 0;
 }
 
@@ -267,6 +270,7 @@ input[type="number"] {
     display: grid;
     grid-template-columns: 40px 1fr auto;
     border-bottom: solid 1px rgba(#fff, .3);
+    padding-right: var(--spacing-2);
     animation: slideUp .25s forwards;
 }
 
@@ -285,11 +289,12 @@ input[type="number"] {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    padding-right: var(--spacing-2);    
 }
 
 .subtotal,
 .tax {
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-1);
     opacity: 0;
     display: flex;
 }
@@ -298,6 +303,7 @@ input[type="number"] {
     border-bottom: solid 2px var(--white);
     padding-bottom: 4px;
     opacity: 0;
+    
 }
 
 .total__label {
@@ -397,6 +403,7 @@ input[type="number"] {
 
 .payment-selected {
     transition: height 100ms ease-in 350ms;
+    padding-right: var(--spacing-2);
 }
 
 .page__title {
