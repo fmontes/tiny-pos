@@ -1,5 +1,5 @@
 Number.prototype.toCurrency = function() {
-    return `$${this.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')}`;
+    return this.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
 };
 
 function addProduct(product) {
@@ -19,17 +19,16 @@ function getExistingProduct(barcode) {
     return document.querySelector(`li[data-barcode="${barcode}"]`);
 }
 
-function getPriceModel() {
-    return productsModel.map(product => product.price);
-}
-
 function getProductListItem(data) {
     const fragment = document.createDocumentFragment();
     const li = document.createElement('li');
     li.dataset.barcode = data.barcode;
     li.classList.add('products__item');
     li.innerHTML = `
-        <span class="products__quantity">${data.quantity}</span>
+        <span class="products__quantity">
+            <span class="products__quantity-number">1</span>
+            <span class="products__quantity-separator">x</span>
+        </span>
         <span class="products__name">${data.name}</span>
         <span class="products__price">${data.price.toCurrency()}</span>
     `;
@@ -42,8 +41,8 @@ function getRandomProduct() {
 }
 
 function getSubtotal() {
-    return productsModel.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.price * currentValue.quantity;
+    return productsModel.reduce((accumulator, currentProduct) => {
+        return accumulator + currentProduct.price * currentProduct.quantity;
     }, 0);
 }
 
@@ -68,7 +67,6 @@ function resetApp() {
 }
 
 function setInvoice(priceProduct) {
-    const pricesModel = getPriceModel();
     subtotalElem.innerHTML = getSubtotal().toCurrency();
     taxElem.innerHTML = getTax().toCurrency();
     totalElem.innerHTML = getTotal().toCurrency();
@@ -83,7 +81,7 @@ function setState(state) {
     } else if (state === 'home') {
         pageState = 'home';
         wrapper.classList.remove('payment');
-        actionsPaymentButton.style.width = `${actionsPaymentButtonWidth}px`;
+        actionsPaymentButton.style.width = `${actionsPaymentButton.offsetWidth}px`;
     } else if (state === 'done') {
         wrapper.classList.add('done');
         pageState = 'home';
@@ -109,18 +107,18 @@ function updateProductsModel(products) {
             return product;
         });
     } else {
+        products.quantity = 1;
         productsModel.push(products);
     }
 }
 
 function updateProductInList(productEl, product) {
-    const quantity = parseInt(productEl.querySelector('.products__quantity').innerHTML) + 1;
+    const quantity = parseInt(productEl.querySelector('.products__quantity-number').innerHTML) + 1;
     productEl.querySelector('.products__price').innerHTML = (product.price * quantity).toCurrency();
-    productEl.querySelector('.products__quantity').innerHTML = quantity;
+    productEl.querySelector('.products__quantity-number').innerHTML = quantity;
 }
 
 const actionsPaymentButton = document.querySelector('.actions__payment');
-const actionsPaymentButtonWidth = actionsPaymentButton.offsetWidth;
 const backButton = document.querySelector('.actions__back');
 const paymentMethodSelector = document.querySelector('.actions__payment-method');
 const productList = document.querySelector('.products');
@@ -131,7 +129,7 @@ const wrapper = document.querySelector('.wrapper');
 let pageState = 'home';
 let productsModel = [];
 
-actionsPaymentButton.style.width = `${actionsPaymentButtonWidth}px`;
+actionsPaymentButton.style.width = `${actionsPaymentButton.offsetWidth}px`;
 
 actionsPaymentButton.addEventListener('click', event => {
     setState(pageState === 'home' ? 'payment' : 'done');

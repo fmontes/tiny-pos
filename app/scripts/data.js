@@ -1,26 +1,32 @@
 const data = [
     {
         barcode: '123',
-        quantity: 1,
-        name: 'Candy Bar',
-        price: 120
+        name: 'Adidas shoes',
+        price: 120.00
     },
     {
         barcode: '456',
-        quantity: 1,
-        name: 'Coca Cola 600ml',
-        price: 90
+        name: 'Casio Watch',
+        price: 90.00
     },
     {
         barcode: '789',
-        quantity: 1,
-        name: 'Water bottle 250ml',
-        price: 60
+        name: 'Marvel Shirt',
+        price: 60.00
     },
     {
         barcode: '321',
-        quantity: 1,
-        name: 'Cake',
-        price: 12000
+        name: 'Nike Short',
+        price: 12000.00
+    },
+    {
+        barcode: '654',
+        name: 'Oakley Sunglasses',
+        price: 12000.00
+    },
+    {
+        barcode: '987',
+        name: 'Volcon Pants',
+        price: 12000.00
     }
 ];
