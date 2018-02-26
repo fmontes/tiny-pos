@@ -3,6 +3,7 @@ Number.prototype.toCurrency = function() {
 };
 
 const $backButton = document.querySelector('.actions__back');
+const $barcodeField = document.querySelector('.header__barcode-input');
 const $cardAmmountField = document.querySelector('.card__ammout');
 const $cashChangeAmmount = document.querySelector('.cash__change-ammout');
 const $cashPayingField = document.querySelector('.cash__paying-field');
@@ -33,6 +34,27 @@ function addProduct(product) {
 function addProductInList(product) {
     $productList.appendChild(getProductListItem(product));
 }
+
+function debounce(func, wait, immediate) {
+    let timeout;
+
+	return function() {
+        const context = this;
+        const args = arguments;
+		const later = function() {
+			timeout = null;
+			if (!immediate) {
+                func.apply(context, args);
+            }
+		};
+		const callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) {
+            func.apply(context, args)
+        }
+	};
+};
 
 function getExistingProductItem(barcode) {
     return document.querySelector(`li[data-barcode="${barcode}"]`);
@@ -177,3 +199,14 @@ $productsShortcuts.addEventListener('click', (event) => {
         $total.classList.add('show');
     }
 });
+
+const searchBarcode = debounce(function(event) {
+    const product = getProduct(event.target.value);
+    if (product) {
+        addProduct(product);
+        event.target.value = '';
+    }
+    
+}, 200);
+
+$barcodeField.addEventListener('keyup', searchBarcode);
