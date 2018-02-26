@@ -168,7 +168,7 @@ $cashPayingField.addEventListener('keyup', event => {
 });
 
 $productsShortcuts.appendChild(getProductsShortcutItems(data));
-$productsShortcuts.style.width = `${data.length * 100}px`;
+$productsShortcuts.style = `min-width: ${data.length * 100}px`;
 $productsShortcuts.addEventListener('click', (event) => {
     addProduct(getProduct(event.target.dataset.barcode));
 
