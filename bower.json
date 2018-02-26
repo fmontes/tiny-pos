@@ -1,5 +1,5 @@
 {
-  "name": "pos-checkout",
+  "name": "tiny-pos",
   "private": true,
   "dependencies": {},
   "devDependencies": {
