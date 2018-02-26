@@ -2,20 +2,39 @@ Number.prototype.toCurrency = function() {
     return this.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
 };
 
+const $backButton = document.querySelector('.actions__back');
+const $cardAmmountField = document.querySelector('.card__ammout');
+const $cashChangeAmmount = document.querySelector('.cash__change-ammout');
+const $cashPayingField = document.querySelector('.cash__paying-field');
+const $paymentMethodSelector = document.querySelector('.actions__payment-method');
+const $primaryButton = document.querySelector('.actions__payment');
+const $productList = document.querySelector('.products');
+const $productsShortcuts = document.querySelector('.products-shortcut');
+const $subtotal = document.querySelector('.subtotal__ammount');
+const $tax = document.querySelector('.tax__ammount');
+const $total = document.querySelector('.total');
+const $totalAmmount = document.querySelector('.total__ammount');
+const $wrapper = document.querySelector('.wrapper');
+
+const model = new State('barcode');
+
 function addProduct(product) {
-    const existingProduct = getExistingProduct(product.barcode);
+    const isNewProduct = !model.itemExist(product.barcode);
+    model.addItem(product);
 
-    if (existingProduct) {
-        updateProductInList(existingProduct, product);
+    if (isNewProduct) {
+        addProductInList(product);
     } else {
-        $productList.appendChild(getProductListItem(product));
+        updateProductInList(product);        
     }
-
-    updateProductsModel(product);
     setInvoice();
 }
 
-function getExistingProduct(barcode) {
+function addProductInList(product) {
+    $productList.appendChild(getProductListItem(product));
+}
+
+function getExistingProductItem(barcode) {
     return document.querySelector(`li[data-barcode="${barcode}"]`);
 }
 
@@ -36,7 +55,7 @@ function getProductListItem(data) {
     return fragment;
 }
 
-function getProductsShortcut(products) {
+function getProductsShortcutItems(products) {
     const fragment = document.createDocumentFragment();
 
     products.forEach(product => {
@@ -49,12 +68,8 @@ function getProductsShortcut(products) {
     return fragment;
 }
 
-function getRandomProduct() {
-    return data[Math.floor(Math.random() * Math.floor(data.length))];
-}
-
 function getSubtotal() {
-    return productsModel.reduce((accumulator, currentProduct) => {
+    return model.getAll().reduce((accumulator, currentProduct) => {
         return accumulator + currentProduct.price * currentProduct.quantity;
     }, 0);
 }
@@ -108,36 +123,22 @@ function resetApp() {
     $productList.innerHTML = '';
     $subtotal.innerHTML = '';
     $tax.innerHTML = '';
-    $total.innerHTML = '';
+    $totalAmmount.innerHTML = '';
     $primaryButton.setAttribute('disabled', true);
-    productsModel = [];
     $total.classList.remove('show');
+    model.reset();
 }
 
 function setInvoice(priceProduct) {
     $subtotal.innerHTML = getSubtotal().toCurrency();
     $tax.innerHTML = getTax().toCurrency();
-    $total.innerHTML = getTotal().toCurrency();
-    $cardAmmountField.innerHTML = $total.innerHTML;
+    $totalAmmount.innerHTML = getTotal().toCurrency();
+    $cardAmmountField.innerHTML = $totalAmmount.innerHTML;
 }
 
-function updateProductsModel(product) {
-    if (productsModel.includes(product)) {
-        productsModel = productsModel.map(product => {
-            if (product.barcode === product.barcode) {
-                product.quantity++;
-            }
-
-            return product;
-        });
-    } else {
-        product.quantity = 1;
-        productsModel.push(product);
-    }
-}
-
-function updateProductInList(productEl, product) {
-    const quantity = parseInt(productEl.querySelector('.products__quantity-number').innerHTML) + 1;
+function updateProductInList(product) {
+    const productEl = getExistingProductItem(product.barcode);
+    const quantity = model.getItemProperty(product.barcode, 'quantity');
     productEl.querySelector('.products__quantity-number').innerHTML = quantity;
     productEl.querySelector('.products__price').innerHTML = (product.price * quantity).toCurrency();    
 }
@@ -145,21 +146,6 @@ function updateProductInList(productEl, product) {
 function getProduct(barcode) {
     return data.find(product => product.barcode === barcode);
 }
-
-const $backButton = document.querySelector('.actions__back');
-const $cardAmmountField = document.querySelector('.card__ammout');
-const $cashChangeAmmount = document.querySelector('.cash__change-ammout');
-const $cashPayingField = document.querySelector('.cash__paying-field');
-const $paymentMethodSelector = document.querySelector('.actions__payment-method');
-const $primaryButton = document.querySelector('.actions__payment');
-const $productList = document.querySelector('.products');
-const $productsShortcuts = document.querySelector('.products-shortcut');
-const $subtotal = document.querySelector('.subtotal__ammount');
-const $tax = document.querySelector('.tax__ammount');
-const $total = document.querySelector('.total__ammount');
-const $wrapper = document.querySelector('.wrapper');
-
-let productsModel = [];
 
 $primaryButton.style.width = `${$primaryButton.offsetWidth}px`;
 
@@ -181,13 +167,13 @@ $cashPayingField.addEventListener('keyup', event => {
         : parseInt('0').toCurrency();
 });
 
-$productsShortcuts.appendChild(getProductsShortcut(data));
+$productsShortcuts.appendChild(getProductsShortcutItems(data));
 $productsShortcuts.style.width = `${data.length * 100}px`;
 $productsShortcuts.addEventListener('click', (event) => {
     addProduct(getProduct(event.target.dataset.barcode));
 
-    if (productsModel.length === 1) {
+    if (model.isNotEmpty()) {
         $primaryButton.removeAttribute('disabled');
-        document.querySelector('.total').classList.add('show');
+        $total.classList.add('show');
     }
 });
