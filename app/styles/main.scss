@@ -1,6 +1,12 @@
 // bower:scss
 // endbower
 
+@mixin mq {
+    @media (min-width: 768px) {
+        @content;
+    }
+ }
+
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
 
 :root {
@@ -30,11 +36,16 @@ html, body {
 }
 
 body {
-    background-size: cover;
-    background: linear-gradient(90deg, var(--blue), var(--black)); // TODO: need to match the design
     color: var(--white);
     font-family: var(--font-family);
     font-size: var(--font-size-basic);
+
+    @include mq {
+        display: flex;
+        justify-content: center;
+        background: url('/images/iphone.png') no-repeat center center / 410px 835px, linear-gradient(198deg, var(--light-blue), var(--blue));
+    }
+
 }
 
 input {
@@ -357,10 +368,20 @@ input[type="number"] {
 }
 
 .wrapper {
+    background-size: cover;
+    background: linear-gradient(90deg, var(--blue), var(--black)); // TODO: need to match the design
     display: flex;
     flex-direction: column;
     overflow: hidden;
     height: 100%;
+
+    @include mq {
+        width: 361px;
+        height: 635px;
+        margin: auto;
+        transform: translateY(3px);
+        border-radius: 3px
+    }
 
     &.payment {
         grid-template-rows: var(--header-height) 1fr;
