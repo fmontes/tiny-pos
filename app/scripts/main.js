@@ -67,6 +67,41 @@ function getTotal() {
     return getSubtotal() + getTax();
 }
 
+function getPageState() {
+    return $wrapper.classList.contains('payment') ? 'payment' : 'home';
+}
+
+function goToDone() {
+    $wrapper.classList.add('done');
+
+    setTimeout(() => {
+        $wrapper.classList.remove('payment');
+        resetApp();
+    }, 150);
+
+    setTimeout(() => {
+        $wrapper.classList.remove('done');
+    }, 800);
+}
+
+function goToHome() {
+    $wrapper.classList.remove('payment');
+    $primaryButton.style.width = `${$primaryButton.offsetWidth}px`;
+}
+
+function goToPayment() {
+    $wrapper.classList.add('payment');
+    $primaryButton.removeAttribute('style');
+}
+
+function navigate() {
+    if (getPageState() === 'home') {
+        goToPayment();
+    } else {
+        goToDone();
+    }
+}
+
 function resetApp() {
     $cashPayingField.value = '';
     $cashChangeAmmount.innerHTML = parseInt('0').toCurrency();
@@ -84,30 +119,6 @@ function setInvoice(priceProduct) {
     $tax.innerHTML = getTax().toCurrency();
     $total.innerHTML = getTotal().toCurrency();
     $cardAmmountField.innerHTML = $total.innerHTML;
-}
-
-function setState(state) {
-    if (state === 'payment') {
-        pageState = 'payment';
-        $wrapper.classList.add('payment');
-        $primaryButton.removeAttribute('style');
-    } else if (state === 'home') {
-        pageState = 'home';
-        $wrapper.classList.remove('payment');
-        $primaryButton.style.width = `${$primaryButton.offsetWidth}px`;
-    } else if (state === 'done') {
-        $wrapper.classList.add('done');
-        pageState = 'home';
-
-        setTimeout(() => {
-            $wrapper.classList.remove('payment');
-            resetApp();
-        }, 150);
-
-        setTimeout(() => {
-            $wrapper.classList.remove('done');
-        }, 800);
-    }
 }
 
 function updateProductsModel(product) {
@@ -148,14 +159,11 @@ const $tax = document.querySelector('.tax__ammount');
 const $total = document.querySelector('.total__ammount');
 const $wrapper = document.querySelector('.wrapper');
 
-let pageState = 'home';
 let productsModel = [];
 
 $primaryButton.style.width = `${$primaryButton.offsetWidth}px`;
 
-$primaryButton.addEventListener('click', event => {
-    setState(pageState === 'home' ? 'payment' : 'done');
-});
+$primaryButton.addEventListener('click', navigate);
 
 $paymentMethodSelector.addEventListener('click', event => {
     if (!event.target.classList.contains('payment-method--selected')) {
@@ -165,9 +173,7 @@ $paymentMethodSelector.addEventListener('click', event => {
     }
 });
 
-$backButton.addEventListener('click', $event => {
-    setState('home');
-});
+$backButton.addEventListener('click', goToHome);
 
 $cashPayingField.addEventListener('keyup', event => {
     $cashChangeAmmount.innerHTML = event.target.value
