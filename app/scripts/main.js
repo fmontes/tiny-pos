@@ -60,7 +60,7 @@ function getProductsShortcutItems(products) {
 
     products.forEach(product => {
         const imageEl = document.createElement('img');
-        imageEl.src = `/images/products/${product.image}`
+        imageEl.src = `images/products/${product.image}`
         imageEl.dataset.barcode = product.barcode;
         fragment.appendChild(imageEl);
     });
