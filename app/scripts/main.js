@@ -8,7 +8,7 @@ function addProduct(product) {
     if (existingProduct) {
         updateProductInList(existingProduct, product);
     } else {
-        productList.appendChild(getProductListItem(product));
+        $productList.appendChild(getProductListItem(product));
     }
 
     updateProductsModel(product);
@@ -36,7 +36,7 @@ function getProductListItem(data) {
     return fragment;
 }
 
-function getProductsShortcutImages(products) {
+function getProductsShortcut(products) {
     const fragment = document.createDocumentFragment();
 
     products.forEach(product => {
@@ -68,93 +68,96 @@ function getTotal() {
 }
 
 function resetApp() {
-    document.querySelector('.cash__paying-field').value = '';
-    document.querySelector('.cash__change-ammout').innerHTML = '$0.00';
-    productList.innerHTML = '';
-    subtotalElem.innerHTML = '';
-    taxElem.innerHTML = '';
-    totalElem.innerHTML = '';
-    actionsPaymentButton.setAttribute('disabled', true);
+    $cashPayingField.value = '';
+    $cashChangeAmmount.innerHTML = parseInt('0').toCurrency();
+    $productList.innerHTML = '';
+    $subtotal.innerHTML = '';
+    $tax.innerHTML = '';
+    $total.innerHTML = '';
+    $primaryButton.setAttribute('disabled', true);
     productsModel = [];
-    document.querySelector('.total').classList.remove('show');
+    $total.classList.remove('show');
 }
 
 function setInvoice(priceProduct) {
-    subtotalElem.innerHTML = getSubtotal().toCurrency();
-    taxElem.innerHTML = getTax().toCurrency();
-    totalElem.innerHTML = getTotal().toCurrency();
-    document.querySelector('.card__ammout').innerHTML = totalElem.innerHTML;
+    $subtotal.innerHTML = getSubtotal().toCurrency();
+    $tax.innerHTML = getTax().toCurrency();
+    $total.innerHTML = getTotal().toCurrency();
+    $cardAmmountField.innerHTML = $total.innerHTML;
 }
 
 function setState(state) {
     if (state === 'payment') {
         pageState = 'payment';
-        wrapper.classList.add('payment');
-        actionsPaymentButton.removeAttribute('style');
+        $wrapper.classList.add('payment');
+        $primaryButton.removeAttribute('style');
     } else if (state === 'home') {
         pageState = 'home';
-        wrapper.classList.remove('payment');
-        actionsPaymentButton.style.width = `${actionsPaymentButton.offsetWidth}px`;
+        $wrapper.classList.remove('payment');
+        $primaryButton.style.width = `${$primaryButton.offsetWidth}px`;
     } else if (state === 'done') {
-        wrapper.classList.add('done');
+        $wrapper.classList.add('done');
         pageState = 'home';
 
         setTimeout(() => {
-            wrapper.classList.remove('payment');
+            $wrapper.classList.remove('payment');
             resetApp();
         }, 150);
 
         setTimeout(() => {
-            wrapper.classList.remove('done');
+            $wrapper.classList.remove('done');
         }, 800);
     }
 }
 
-function updateProductsModel(products) {
-    if (productsModel.includes(products)) {
+function updateProductsModel(product) {
+    if (productsModel.includes(product)) {
         productsModel = productsModel.map(product => {
-            if (product.barcode === products.barcode) {
+            if (product.barcode === product.barcode) {
                 product.quantity++;
             }
 
             return product;
         });
     } else {
-        products.quantity = 1;
-        productsModel.push(products);
+        product.quantity = 1;
+        productsModel.push(product);
     }
 }
 
 function updateProductInList(productEl, product) {
     const quantity = parseInt(productEl.querySelector('.products__quantity-number').innerHTML) + 1;
-    productEl.querySelector('.products__price').innerHTML = (product.price * quantity).toCurrency();
     productEl.querySelector('.products__quantity-number').innerHTML = quantity;
+    productEl.querySelector('.products__price').innerHTML = (product.price * quantity).toCurrency();    
 }
 
 function getProduct(barcode) {
     return data.find(product => product.barcode === barcode);
 }
 
-const actionsPaymentButton = document.querySelector('.actions__payment');
-const backButton = document.querySelector('.actions__back');
-const paymentMethodSelector = document.querySelector('.actions__payment-method');
-const productList = document.querySelector('.products');
-const subtotalElem = document.querySelector('.subtotal__ammount');
-const taxElem = document.querySelector('.tax__ammount');
-const totalElem = document.querySelector('.total__ammount');
-const wrapper = document.querySelector('.wrapper');
-const productsShortcutEl = document.querySelector('.products-shortcut');
+const $backButton = document.querySelector('.actions__back');
+const $cardAmmountField = document.querySelector('.card__ammout');
+const $cashChangeAmmount = document.querySelector('.cash__change-ammout');
+const $cashPayingField = document.querySelector('.cash__paying-field');
+const $paymentMethodSelector = document.querySelector('.actions__payment-method');
+const $primaryButton = document.querySelector('.actions__payment');
+const $productList = document.querySelector('.products');
+const $productsShortcuts = document.querySelector('.products-shortcut');
+const $subtotal = document.querySelector('.subtotal__ammount');
+const $tax = document.querySelector('.tax__ammount');
+const $total = document.querySelector('.total__ammount');
+const $wrapper = document.querySelector('.wrapper');
 
 let pageState = 'home';
 let productsModel = [];
 
-actionsPaymentButton.style.width = `${actionsPaymentButton.offsetWidth}px`;
+$primaryButton.style.width = `${$primaryButton.offsetWidth}px`;
 
-actionsPaymentButton.addEventListener('click', event => {
+$primaryButton.addEventListener('click', event => {
     setState(pageState === 'home' ? 'payment' : 'done');
 });
 
-paymentMethodSelector.addEventListener('click', event => {
+$paymentMethodSelector.addEventListener('click', event => {
     if (!event.target.classList.contains('payment-method--selected')) {
         document.querySelector('.payment-selected').classList.toggle('payment-selected--card');
         document.querySelector('.payment-method--selected').classList.remove('payment-method--selected');
@@ -162,23 +165,23 @@ paymentMethodSelector.addEventListener('click', event => {
     }
 });
 
-backButton.addEventListener('click', $event => {
+$backButton.addEventListener('click', $event => {
     setState('home');
 });
 
-document.querySelector('.cash__paying-field').addEventListener('keyup', event => {
-    document.querySelector('.cash__change-ammout').innerHTML = event.target.value
+$cashPayingField.addEventListener('keyup', event => {
+    $cashChangeAmmount.innerHTML = event.target.value
         ? (event.target.value - getTotal()).toCurrency()
         : parseInt('0').toCurrency();
 });
 
-productsShortcutEl.appendChild(getProductsShortcutImages(data));
-productsShortcutEl.style.width = `${data.length * 100}px`;
-productsShortcutEl.addEventListener('click', (event) => {
+$productsShortcuts.appendChild(getProductsShortcut(data));
+$productsShortcuts.style.width = `${data.length * 100}px`;
+$productsShortcuts.addEventListener('click', (event) => {
     addProduct(getProduct(event.target.dataset.barcode));
 
     if (productsModel.length === 1) {
-        actionsPaymentButton.removeAttribute('disabled');
+        $primaryButton.removeAttribute('disabled');
         document.querySelector('.total').classList.add('show');
     }
 });
