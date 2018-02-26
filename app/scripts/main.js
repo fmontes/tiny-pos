@@ -36,6 +36,19 @@ function getProductListItem(data) {
     return fragment;
 }
 
+function getProductsShortcutImages(products) {
+    const fragment = document.createDocumentFragment();
+
+    products.forEach(product => {
+        const imageEl = document.createElement('img');
+        imageEl.src = `/images/products/${product.image}`
+        imageEl.dataset.barcode = product.barcode;
+        fragment.appendChild(imageEl);
+    });
+    
+    return fragment;
+}
+
 function getRandomProduct() {
     return data[Math.floor(Math.random() * Math.floor(data.length))];
 }
@@ -118,6 +131,10 @@ function updateProductInList(productEl, product) {
     productEl.querySelector('.products__quantity-number').innerHTML = quantity;
 }
 
+function getProduct(barcode) {
+    return data.find(product => product.barcode === barcode);
+}
+
 const actionsPaymentButton = document.querySelector('.actions__payment');
 const backButton = document.querySelector('.actions__back');
 const paymentMethodSelector = document.querySelector('.actions__payment-method');
@@ -126,6 +143,8 @@ const subtotalElem = document.querySelector('.subtotal__ammount');
 const taxElem = document.querySelector('.tax__ammount');
 const totalElem = document.querySelector('.total__ammount');
 const wrapper = document.querySelector('.wrapper');
+const productsShortcutEl = document.querySelector('.products-shortcut');
+
 let pageState = 'home';
 let productsModel = [];
 
@@ -147,17 +166,19 @@ backButton.addEventListener('click', $event => {
     setState('home');
 });
 
-document.querySelector('.barcode').addEventListener('click', () => {
-    addProduct(getRandomProduct());
+document.querySelector('.cash__paying-field').addEventListener('keyup', event => {
+    document.querySelector('.cash__change-ammout').innerHTML = event.target.value
+        ? (event.target.value - getTotal()).toCurrency()
+        : parseInt('0').toCurrency();
+});
+
+productsShortcutEl.appendChild(getProductsShortcutImages(data));
+productsShortcutEl.style.width = `${data.length * 100}px`;
+productsShortcutEl.addEventListener('click', (event) => {
+    addProduct(getProduct(event.target.dataset.barcode));
 
     if (productsModel.length === 1) {
         actionsPaymentButton.removeAttribute('disabled');
         document.querySelector('.total').classList.add('show');
     }
-});
-
-document.querySelector('.cash__paying-field').addEventListener('keyup', event => {
-    document.querySelector('.cash__change-ammout').innerHTML = event.target.value
-        ? (event.target.value - getTotal()).toCurrency()
-        : parseInt('0').toCurrency();
 });

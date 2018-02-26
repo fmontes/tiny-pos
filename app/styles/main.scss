@@ -5,6 +5,7 @@
 
 :root {
     --blue: #1A0063;
+    --light-blue: #6445BA;
     --black: #000;
     --white: #fff;
     --yellow: #E2E800;
@@ -15,6 +16,7 @@
     --spacing-1: 0.5rem;
     --spacing-2: 1rem;
     --spacing-3: 1.5rem;
+    --header-height: 60px;
 }
 
 *, *:before, *:after {
@@ -35,15 +37,20 @@ body {
     font-size: var(--font-size-basic);
 }
 
+input {
+    font-family: var(--font-family);
+    font-size: var(--font-size-large);
+    color: var(--blue);  
+    width: 100%;
+    border-radius: 0;
+    border: solid 1px var(--light-blue);
+}
+
 input[type="number"] {
     background-color: var(--white);
     border-radius: 20px;
     border: none;
-    color: var(--blue);
-    font-family: var(--font-family);
-    font-size: var(--font-size-large);
     height: 40px;
-    width: 100%;
     padding: 0 1rem;
 
     &:focus {
@@ -108,11 +115,6 @@ input[type="number"] {
 
 .btn__icon {
     display: none;
-}
-
-.barcode {
-    background-color: var(--white);
-    height: 222px;
 }
 
 .card, .cash {
@@ -192,21 +194,46 @@ input[type="number"] {
     }
 }
 
+.header {
+    height: var(--header-height);
+    overflow: hidden;
+}
+
+.header__barcode {
+    height: var(--header-height);
+    padding: var(--spacing-1);
+    transform: translateY(0);
+    width: 100%;
+}
+
+.header__barcode-input {
+    width: 100%;
+    height: 44px;
+    padding: var(--spacing-1);
+    font-size: var(--font-size-basic);
+
+    &::placeholder {
+        font-family: var(--font-family);
+        font-size: var(--font-size-basic);
+    }
+}
+
+.header__title {
+    background-color: var(--white);
+    color: var(--blue);
+    height: var(--header-height);
+    line-height: var(--header-height);
+    margin: 0;
+    text-align: center;
+    transform: translateY(20px);
+    width: 100%;
+}
+
 .invoincing {
     display: flex;
     flex-direction: column;
     margin: var(--spacing-2) 0 0;
     flex-shrink: 0;
-}
-
-.page__title {
-    color: var(--blue);
-    height: 60px;
-    line-height: 60px;
-    margin: 0;
-    opacity: 0;
-    text-align: center;
-    transform: translateY(20px);
 }
 
 .payment-method__cash,
@@ -283,6 +310,20 @@ input[type="number"] {
     color: rgba(#fff, .5)
 }
 
+.products-shortcut {
+    display: flex;
+    align-items: center;
+    background-color: var(--white);
+    height: 116px;
+    overflow: hidden;
+
+    img {
+        width: 100px;
+        height: 100px;
+        padding: var(--spacing-1);
+    }
+}
+
 .subtotal,
 .tax,
 .total {
@@ -322,7 +363,7 @@ input[type="number"] {
     height: 100%;
 
     &.payment {
-        grid-template-rows: 60px 1fr;
+        grid-template-rows: var(--header-height) 1fr;
 
         .actions__back,
         .actions__payment-method {
@@ -343,13 +384,9 @@ input[type="number"] {
             }
         }
 
-        .barcode {
-            height: 60px;
-        }
-
-        .page__title {
-            opacity: 1;
-            transform: translateY(0);
+        .header__barcode,
+        .header__title {
+            transform: translateY(calc(var(--header-height) * -1));
         }
 
         .payment-selected {
@@ -358,6 +395,10 @@ input[type="number"] {
         
         .products {
             flex-grow: 0;
+        }
+
+        .products-shortcut {
+            height: 0;
         }
 
         .invoincing {
@@ -397,17 +438,18 @@ input[type="number"] {
     transition: flex 150ms ease-in 200ms;
 }
 
-.barcode {
-    transition: height 150ms ease-in 350ms;
-}
-
 .payment-selected {
     transition: height 100ms ease-in 350ms;
     padding-right: var(--spacing-2);
 }
 
-.page__title {
-    transition: transform 100ms ease-in 400ms, opacity 100ms ease-in 400ms;
+.products-shortcut {
+    transition: height 100ms ease-in 400ms;
+}
+
+.header__barcode,
+.header__title {
+    transition: transform 100ms ease-in 400ms;
 }
 
 .total.show {
