@@ -1,5 +1,5 @@
 Number.prototype.toCurrency = function() {
-    return this.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+    return this.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
 
 const $backButton = document.querySelector('.actions__back');
@@ -26,7 +26,7 @@ function addProduct(product) {
     if (isNewProduct) {
         addProductInList(product);
     } else {
-        updateProductInList(product);        
+        updateProductInList(product);
     }
     setInvoice();
 }
@@ -38,23 +38,23 @@ function addProductInList(product) {
 function debounce(func, wait, immediate) {
     let timeout;
 
-	return function() {
+    return function() {
         const context = this;
         const args = arguments;
-		const later = function() {
-			timeout = null;
-			if (!immediate) {
+        const later = function() {
+            timeout = null;
+            if (!immediate) {
                 func.apply(context, args);
             }
-		};
-		const callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) {
-            func.apply(context, args)
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) {
+            func.apply(context, args);
         }
-	};
-};
+    };
+}
 
 function getExistingProductItem(barcode) {
     return document.querySelector(`li[data-barcode="${barcode}"]`);
@@ -82,11 +82,11 @@ function getProductsShortcutItems(products) {
 
     products.forEach(product => {
         const imageEl = document.createElement('img');
-        imageEl.src = `images/products/${product.image}`
+        imageEl.src = `images/products/${product.image}`;
         imageEl.dataset.barcode = product.barcode;
         fragment.appendChild(imageEl);
     });
-    
+
     return fragment;
 }
 
@@ -162,7 +162,7 @@ function updateProductInList(product) {
     const productEl = getExistingProductItem(product.barcode);
     const quantity = model.getItemProperty(product.barcode, 'quantity');
     productEl.querySelector('.products__quantity-number').innerHTML = quantity;
-    productEl.querySelector('.products__price').innerHTML = (product.price * quantity).toCurrency();    
+    productEl.querySelector('.products__price').innerHTML = (product.price * quantity).toCurrency();
 }
 
 function getProduct(barcode) {
@@ -191,7 +191,7 @@ $cashPayingField.addEventListener('keyup', event => {
 
 $productsShortcuts.appendChild(getProductsShortcutItems(data));
 $productsShortcuts.style = `min-width: ${data.length * 100}px`;
-$productsShortcuts.addEventListener('click', (event) => {
+$productsShortcuts.addEventListener('click', event => {
     addProduct(getProduct(event.target.dataset.barcode));
 
     if (model.isNotEmpty()) {
@@ -206,7 +206,6 @@ const searchBarcode = debounce(function(event) {
         addProduct(product);
         event.target.value = '';
     }
-    
 }, 200);
 
 $barcodeField.addEventListener('keyup', searchBarcode);

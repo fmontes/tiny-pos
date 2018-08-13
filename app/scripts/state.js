@@ -9,7 +9,7 @@ class State {
         const exitingItem = stateMap.get(item[this.key]);
 
         if (exitingItem) {
-            exitingItem.quantity++
+            exitingItem.quantity++;
             stateMap.set(exitingItem[this.key], exitingItem);
         } else {
             item.quantity = 1;
